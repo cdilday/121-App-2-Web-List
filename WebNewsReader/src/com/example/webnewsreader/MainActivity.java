@@ -19,6 +19,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -93,11 +94,11 @@ public class MainActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					// Reacts to a button press.
-					// Gets the integer tag of the button.
 					String s = (String) v.getTag();
 					int pos = Integer.parseInt(s);
-					aList.remove(pos);
-					aa.notifyDataSetChanged();
+//replace this with going to webview code
+					//aList.remove(pos);
+					//aa.notifyDataSetChanged();
 				}
 			});
 
@@ -117,20 +118,6 @@ public class MainActivity extends Activity {
 		myListView.setAdapter(aa);
 		aa.notifyDataSetChanged();
 		startDownload();
-	}
-	
-	public void enterItem(View v) {
-		Log.d(LOG_TAG, "The button has been pressed");
-		//EditText et = (EditText) findViewById(R.id.editText1);
-		//String s = et.getText().toString();
-		ListElement el = new ListElement();
-		//el.textLabel = s;
-		el.buttonLabel = "Go";
-		aList.add(el);
-		Log.d(LOG_TAG, "The length of the list now is " + aList.size());
-		aa.notifyDataSetChanged();
-		// Clears the entry text.
-		//et.setText("");
 	}
 	
 	public void makeList (String str)
@@ -173,7 +160,7 @@ public class MainActivity extends Activity {
 		Log.d(LOG_TAG, "New element being created");
 		ListElement el = new ListElement();
 		el.textLabel = Title;
-		el.buttonLabel = "Go";
+		el.buttonLabel = "Read";
 		aList.add(el);
 		Log.d(LOG_TAG, "The length of the list now is " + aList.size());
 		aa.notifyDataSetChanged();
@@ -280,6 +267,39 @@ public class MainActivity extends Activity {
 	    return sb.toString();
 	}
 
+	public void goOther(View V) {
+		// Grab the text, and store it in a preference.
+		/*String text1 = edv.getText().toString();
+		SharedPreferences settings = getSharedPreferences(MYPREFS, 0);
+		SharedPreferences.Editor editor = settings.edit();
+	    editor.putString(PREF_STRING_1, text1);
+	    editor.commit();
+	    
+	    // The second string we store it in the singleton class.
+		EditText edv2 = (EditText) findViewById(R.id.editText2);
+		String text2 = edv2.getText().toString();
+	    appInfo.sharedString = text2;
+	    
+	    // Let's produce a string that serializes our class, just for the fun of it.
+	    SerialMe me = new SerialMe();
+	    me.myInt = 5;
+	    me.myString = "luca";
+	    // Let's build a serializer.
+	    Gson gson = new Gson();
+	    String s = gson.toJson(me);
+	    Log.i(LOG_TAG, s);
+	    
+	    // Let's deserialize it now.
+	    SerialMe alter = gson.fromJson(s, SerialMe.class);
+	    Log.i(LOG_TAG, alter.myString);
+	    
+	    String s2 = gson.toJson(appInfo);
+	    AppInfo a = gson.fromJson(s2, AppInfo.class);
+	    
+		// Go to second activity
+		Intent intent = new Intent(this, SecondActivity.class);
+		startActivity(intent);*/
+	}
 
 
 }
