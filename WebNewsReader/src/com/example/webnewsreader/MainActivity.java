@@ -135,12 +135,20 @@ public class MainActivity extends Activity {
 	
 	public void makeList (String str)
 	{
-		String delims = "title";
-		String[] tokens = str.split(delims);
-		for (int i = 0; i < tokens.length; i++)
+		int left, right;
+		String[] titles = new String[20];
+		String[] urls = new String[20];
+		int t = 0, u = 0;
+		for (int i = 0; i < 20 && str.indexOf("http") != -1; i++)
 		{
-			String temp = tokens[i];
-			makeNewElement(temp);
+			String temp;
+			left = str.indexOf("http");
+			right = str.indexOf("\"", str.indexOf("http") +1 );
+			urls[u] = str.substring(left, right);
+			makeNewElement(urls[u]);
+			temp = str.replace(urls[u], "");
+			str = temp;
+			u++;
 		}
 	}
 	
