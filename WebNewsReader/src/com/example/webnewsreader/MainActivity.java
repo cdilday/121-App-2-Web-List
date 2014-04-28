@@ -138,17 +138,33 @@ public class MainActivity extends Activity {
 		int left, right;
 		String[] titles = new String[20];
 		String[] urls = new String[20];
-		int t = 0, u = 0;
-		for (int i = 0; i < 20 && str.indexOf("http") != -1; i++)
+		for (int i = 0; i < 20; i++)
 		{
-			String temp;
-			left = str.indexOf("http");
-			right = str.indexOf("\"", str.indexOf("http") +1 );
-			urls[u] = str.substring(left, right);
-			makeNewElement(urls[u]);
-			temp = str.replace(urls[u], "");
+			left = str.indexOf("{", 5);
+			right = str.indexOf("}") + 1;
+			if(left == -1 || right == -1)
+			{
+				break;
+			}
+			String sub = str.substring(left, right);
+			String temp = str;
+			temp = str.replace(sub, "");
 			str = temp;
-			u++;
+			if(sub.indexOf("http") != -1)
+			{
+				left = sub.indexOf("http");
+				right = sub.indexOf("\"", sub.indexOf("http") +1 );
+				urls[i] = sub.substring(left, right);
+				makeNewElement(urls[i]);
+			}
+			if(sub.indexOf("title") != -1)
+			{
+				left = sub.indexOf("title");
+				right = sub.indexOf("\"", sub.indexOf("title") +10 );
+				titles[i] = sub.substring(left + 9, right);
+				makeNewElement(titles[i]);
+			}
+			
 		}
 	}
 	

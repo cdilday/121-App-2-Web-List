@@ -21,8 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/listButton"
         android:layout_alignBottom="@+id/listButton"
-        android:layout_marginRight="50dp"
-        android:layout_toLeftOf="@+id/listButton"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="22dp"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
