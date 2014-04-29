@@ -20,6 +20,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,13 +38,20 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	
+	static final public String MYPREFS = "myprefs";
+	static final public String PREF_TITLE = "string_1";
 	private static final String LOG_TAG = "MainActivity";
+	
 	private static final int MAX_SETUP_DOWNLOAD_TRIES = 3;
-	// Change this.
 	private static final String DOWNLOAD_URL = "http://luca-ucsc.appspot.com/jsonnews/default/news_sources.json";
+	
+	public String[] titles = new String[20];
+	public String[] urls = new String[20];
 	
 	// Background downloader.
 	private BackgroundDownloader downloader = null;
+	
+	AppInfo appInfo;
 	
 	private class ListElement {
 		ListElement() {};
@@ -97,7 +105,7 @@ public class MainActivity extends Activity {
 					String s = (String) v.getTag();
 					int pos = Integer.parseInt(s);
 //replace this with going to webview code
-					//aList.remove(pos);
+					goOther(v, pos);
 					//aa.notifyDataSetChanged();
 				}
 			});
@@ -118,13 +126,20 @@ public class MainActivity extends Activity {
 		myListView.setAdapter(aa);
 		aa.notifyDataSetChanged();
 		startDownload();
+		appInfo = AppInfo.getInstance(this);
+	}
+	
+	//may not need this since we're not storing the data when it returns..
+	@Override
+	protected void onResume() {
+		super.onResume();
+		SharedPreferences settings = getSharedPreferences(MainActivity.MYPREFS, 0);
+		String myTitle = settings.getString(MainActivity.PREF_TITLE, "");
 	}
 	
 	public void makeList (String str)
 	{
 		int left, right;
-		String[] titles = new String[20];
-		String[] urls = new String[20];
 		for (int i = 0; i < 20; i++)
 		{
 			left = str.indexOf("{", 5);
@@ -142,7 +157,6 @@ public class MainActivity extends Activity {
 				left = sub.indexOf("http");
 				right = sub.indexOf("\"", sub.indexOf("http") +1 );
 				urls[i] = sub.substring(left, right);
-				makeNewElement(urls[i]);
 			}
 			if(sub.indexOf("title") != -1)
 			{
@@ -267,38 +281,38 @@ public class MainActivity extends Activity {
 	    return sb.toString();
 	}
 
-	public void goOther(View V) {
+	public void goOther(View V, int index) {
 		// Grab the text, and store it in a preference.
-		/*String text1 = edv.getText().toString();
+		String text1 = titles[index];
 		SharedPreferences settings = getSharedPreferences(MYPREFS, 0);
 		SharedPreferences.Editor editor = settings.edit();
-	    editor.putString(PREF_STRING_1, text1);
+	    editor.putString(PREF_TITLE, text1);
 	    editor.commit();
 	    
 	    // The second string we store it in the singleton class.
-		EditText edv2 = (EditText) findViewById(R.id.editText2);
-		String text2 = edv2.getText().toString();
-	    appInfo.sharedString = text2;
+		//EditText edv2 = (EditText) findViewById(R.id.editText2);
+		//String text2 = edv2.getText().toString();
+	    //appInfo.sharedString = text2;
 	    
 	    // Let's produce a string that serializes our class, just for the fun of it.
 	    SerialMe me = new SerialMe();
-	    me.myInt = 5;
-	    me.myString = "luca";
+	    me.myURL = urls[index];
+	    me.myTitle = titles[index];
 	    // Let's build a serializer.
-	    Gson gson = new Gson();
+	    /*Gson gson = new Gson();
 	    String s = gson.toJson(me);
 	    Log.i(LOG_TAG, s);
 	    
 	    // Let's deserialize it now.
 	    SerialMe alter = gson.fromJson(s, SerialMe.class);
-	    Log.i(LOG_TAG, alter.myString);
+	    Log.i(LOG_TAG, alter.myTitle);
 	    
 	    String s2 = gson.toJson(appInfo);
 	    AppInfo a = gson.fromJson(s2, AppInfo.class);
-	    
+	    */
 		// Go to second activity
 		Intent intent = new Intent(this, SecondActivity.class);
-		startActivity(intent);*/
+		startActivity(intent);
 	}
 
 
