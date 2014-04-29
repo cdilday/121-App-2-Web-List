@@ -7,5 +7,6 @@
     <string name="go">Go</string>
     <string name="Back">back</string>
     <string name="back">Back</string>
+    <string name="title_activity_second">SecondActivity</string>
 
 </resources>
