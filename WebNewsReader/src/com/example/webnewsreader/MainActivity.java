@@ -40,6 +40,7 @@ public class MainActivity extends Activity {
 	
 	static final public String MYPREFS = "myprefs";
 	static final public String PREF_TITLE = "string_1";
+	static final public String PREF_URL = "url";
 	private static final String LOG_TAG = "MainActivity";
 	
 	private static final int MAX_SETUP_DOWNLOAD_TRIES = 3;
@@ -104,7 +105,6 @@ public class MainActivity extends Activity {
 					// Reacts to a button press.
 					String s = (String) v.getTag();
 					int pos = Integer.parseInt(s);
-//replace this with going to webview code
 					goOther(v, pos);
 					//aa.notifyDataSetChanged();
 				}
@@ -284,33 +284,18 @@ public class MainActivity extends Activity {
 	public void goOther(View V, int index) {
 		// Grab the text, and store it in a preference.
 		String text1 = titles[index];
+		String text2 = urls[index];
 		SharedPreferences settings = getSharedPreferences(MYPREFS, 0);
 		SharedPreferences.Editor editor = settings.edit();
 	    editor.putString(PREF_TITLE, text1);
+	    editor.putString(PREF_URL, text2);
 	    editor.commit();
-	    
-	    // The second string we store it in the singleton class.
-		//EditText edv2 = (EditText) findViewById(R.id.editText2);
-		//String text2 = edv2.getText().toString();
-	    //appInfo.sharedString = text2;
 	    
 	    // Let's produce a string that serializes our class, just for the fun of it.
 	    SerialMe me = new SerialMe();
 	    me.myURL = urls[index];
 	    me.myTitle = titles[index];
-	    // Let's build a serializer.
-	    /*Gson gson = new Gson();
-	    String s = gson.toJson(me);
-	    Log.i(LOG_TAG, s);
-	    
-	    // Let's deserialize it now.
-	    SerialMe alter = gson.fromJson(s, SerialMe.class);
-	    Log.i(LOG_TAG, alter.myTitle);
-	    
-	    String s2 = gson.toJson(appInfo);
-	    AppInfo a = gson.fromJson(s2, AppInfo.class);
-	    */
-		// Go to second activity
+
 		Intent intent = new Intent(this, SecondActivity.class);
 		startActivity(intent);
 	}

@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.webkit.WebSettings;
 
 public class SecondActivity extends Activity {
 
@@ -27,6 +30,12 @@ public class SecondActivity extends Activity {
 		String myTitle = settings.getString(MainActivity.PREF_TITLE, "");
 		TextView tv = (TextView) findViewById(R.id.textView1);
 		tv.setText(myTitle);
+		String myURL = settings.getString(MainActivity.PREF_URL, "");
+		WebView newsPage = (WebView) findViewById(R.id.webView1);
+		WebSettings webSettings = newsPage.getSettings();
+		webSettings.setBuiltInZoomControls(true);
+        newsPage.setWebViewClient(new Callback());  //HERE IS THE MAIN CHANGE
+		newsPage.loadUrl(myURL);
 		
 		// and the one from the singleton object
 		//TextView tv2 = (TextView) findViewById(R.id.textView3);
@@ -41,5 +50,12 @@ public class SecondActivity extends Activity {
 		// finish();
 	}
 
+    private class Callback extends WebViewClient{  //HERE IS THE MAIN CHANGE. 
 
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            return (false);
+        }
+
+    }
 }
