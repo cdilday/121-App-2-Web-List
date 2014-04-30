@@ -34,23 +34,17 @@ public class SecondActivity extends Activity {
 		WebView newsPage = (WebView) findViewById(R.id.webView1);
 		WebSettings webSettings = newsPage.getSettings();
 		webSettings.setBuiltInZoomControls(true);
-        newsPage.setWebViewClient(new Callback());  //HERE IS THE MAIN CHANGE
+        newsPage.setWebViewClient(new Callback());
 		newsPage.loadUrl(myURL);
-		
-		// and the one from the singleton object
-		//TextView tv2 = (TextView) findViewById(R.id.textView3);
-		//tv2.setText(appInfo.sharedString);		
-		
 	}
 	
 	public void clickBack(View V) {
 		Intent intent = new Intent(this, MainActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		// finish();
 	}
 
-    private class Callback extends WebViewClient{  //HERE IS THE MAIN CHANGE. 
+    private class Callback extends WebViewClient{
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {

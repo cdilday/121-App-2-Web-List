@@ -97,16 +97,13 @@ public class MainActivity extends Activity {
 			tv.setText(w.textLabel);
 			b.setText(w.buttonLabel);
 
-			// Sets a listener for the button, and a tag for the button as well.
 			b.setTag(Integer.toString(position));
 			b.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// Reacts to a button press.
 					String s = (String) v.getTag();
 					int pos = Integer.parseInt(s);
 					goOther(v, pos);
-					//aa.notifyDataSetChanged();
 				}
 			});
 
@@ -129,14 +126,7 @@ public class MainActivity extends Activity {
 		appInfo = AppInfo.getInstance(this);
 	}
 	
-	//may not need this since we're not storing the data when it returns..
-	@Override
-	protected void onResume() {
-		super.onResume();
-		SharedPreferences settings = getSharedPreferences(MainActivity.MYPREFS, 0);
-		String myTitle = settings.getString(MainActivity.PREF_TITLE, "");
-	}
-	
+	//Creates the list with the downloaded information string
 	public void makeList (String str)
 	{
 		int left, right;
@@ -175,6 +165,7 @@ public class MainActivity extends Activity {
 		}
 	}
 	
+	//makes a new element for the list. Checks if each element has a URL
 	public void makeNewElement(String Title, int index)
 	{
 		Log.d(LOG_TAG, "New element being created");
@@ -188,18 +179,13 @@ public class MainActivity extends Activity {
 		Log.d(LOG_TAG, "The length of the list now is " + aList.size());
 		aa.notifyDataSetChanged();
 	}
-
-	// Background sleeper.
-	// private BackgroundSleeper sleeper = null;
 	
-	
-	// This function can be associated e.g. with a button.
+	//Begins the download, called in onCreate
 	public void startDownload() {
 		downloader = new BackgroundDownloader();
 		downloader.execute(DOWNLOAD_URL);
 	}
 	
-    // This class downloads from the net the camera setup instructions.
     private class BackgroundDownloader extends AsyncTask<String, String, String> {
     	
     	protected String doInBackground(String... urls) {
@@ -248,7 +234,6 @@ public class MainActivity extends Activity {
     	}
     	
     	protected void onPostExecute(String s) {
-    		// This is executed in the UI thread.
     		makeList(s);
     	}
     	
@@ -256,7 +241,7 @@ public class MainActivity extends Activity {
     
     
     @Override
-    // This stops the downloader as soon as possible.
+    // Stops the downloader as quickly as possible when app is stopped
     public void onStop() {
     	if (downloader != null) {
     		downloader.cancel(false);
@@ -290,6 +275,7 @@ public class MainActivity extends Activity {
 	    return sb.toString();
 	}
 
+    //goes to SecondActivity with information stored in preferences
 	public void goOther(View V, int index) {
 		// Grab the text, and store it in a preference.
 		String text1 = titles[index];
@@ -299,11 +285,6 @@ public class MainActivity extends Activity {
 	    editor.putString(PREF_TITLE, text1);
 	    editor.putString(PREF_URL, text2);
 	    editor.commit();
-	    
-	    // Let's produce a string that serializes our class, just for the fun of it.
-	    SerialMe me = new SerialMe();
-	    me.myURL = urls[index];
-	    me.myTitle = titles[index];
 
 		Intent intent = new Intent(this, SecondActivity.class);
 		startActivity(intent);
