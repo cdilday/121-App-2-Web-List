@@ -152,29 +152,38 @@ public class MainActivity extends Activity {
 			String temp = str;
 			temp = str.replace(sub, "");
 			str = temp;
-			if(sub.indexOf("http") != -1)
+			if((sub.indexOf("title") == -1) && (sub.indexOf("http") == -1))
 			{
-				left = sub.indexOf("http");
-				right = sub.indexOf("\"", sub.indexOf("http") +1 );
-				urls[i] = sub.substring(left, right);
+				i--;
 			}
-			if(sub.indexOf("title") != -1)
-			{
-				left = sub.indexOf("title");
-				right = sub.indexOf("\"", sub.indexOf("title") +10 );
-				titles[i] = sub.substring(left + 9, right);
-				makeNewElement(titles[i]);
+			else{
+				if(sub.indexOf("http") != -1)
+				{
+					left = sub.indexOf("http");
+					right = sub.indexOf("\"", sub.indexOf("http") +1 );
+					urls[i] = sub.substring(left, right);
+				}
+				if(sub.indexOf("title") != -1)
+				{
+					left = sub.indexOf("title");
+					right = sub.indexOf("\"", sub.indexOf("title") +10 );
+					titles[i] = sub.substring(left + 9, right);
+					makeNewElement(titles[i], i);
+				}
 			}
 			
 		}
 	}
 	
-	public void makeNewElement(String Title)
+	public void makeNewElement(String Title, int index)
 	{
 		Log.d(LOG_TAG, "New element being created");
 		ListElement el = new ListElement();
 		el.textLabel = Title;
-		el.buttonLabel = "Read";
+		if(urls[index] != null)
+			el.buttonLabel = "Read";
+		else
+			el.buttonLabel = "NA";
 		aList.add(el);
 		Log.d(LOG_TAG, "The length of the list now is " + aList.size());
 		aa.notifyDataSetChanged();
